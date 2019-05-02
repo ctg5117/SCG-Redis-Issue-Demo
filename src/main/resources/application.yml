@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    gateway:
+        - id: redisTest
+          uri: http://localhost:8000
+          predicates:
+            - Path=/rate
+          filters:
+            - name: RequestRateLimiter
+              args:
+                key-resolver: "#{@userKeyResolver}"
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 2
+
+---
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
